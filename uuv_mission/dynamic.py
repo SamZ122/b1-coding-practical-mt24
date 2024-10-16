@@ -2,6 +2,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 from .terrain import generate_reference_and_limits
 
 class Submarine:
@@ -68,6 +69,11 @@ class Mission:
     cave_height: np.ndarray
     cave_depth: np.ndarray
 
+    def __init__(self, reference, cave_height, cave_depth):
+        self.reference = reference
+        self.cave_depth = cave_depth
+        self.cave_height = cave_height
+
     @classmethod
     def random_mission(cls, duration: int, scale: float):
         (reference, cave_height, cave_depth) = generate_reference_and_limits(duration, scale)
@@ -76,6 +82,8 @@ class Mission:
     @classmethod
     def from_csv(cls, file_name: str):
         # You are required to implement this method
+        df = pd.read_csv(file_name, usecols=['reference','cave_height','cave_depth']) 
+        return cls(df.reference, df.cave_height, df.cave_depth)
         pass
 
 
