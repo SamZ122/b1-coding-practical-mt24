@@ -106,8 +106,10 @@ class ClosedLoop:
             positions[t] = self.plant.get_position()
             observation_t = self.plant.get_depth()
             # Call your controller here
+            # Generate current error and previous error from reference and position data
             e = mission.reference[t]-observation_t
             e_1 = mission.reference[t-1]-positions[t-1][1]
+            # Generate controller output and simulation over a timestep
             actions[t] = self.controller.control_action(e, e_1)
             self.plant.transition(actions[t], disturbances[t])
 
